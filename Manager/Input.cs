@@ -42,6 +42,9 @@ namespace Gramini.Manager
             return Convert.ToInt32(GetInput(pattern, b, c));
         }
 
+        /**
+         * todo while-loop until Directory.Exists
+         */
         static public string GetInputPath(string b = "enter path ", string c = "invalid input", string pattern = @"^.*$")
         {
             string input = GetInput(pattern, b, c);
@@ -59,14 +62,22 @@ namespace Gramini.Manager
 
         internal static string GetInputFile(string b = "enter path to file", string c = "invalid input", string pattern = @"^.*$")
         {
-            string input = GetInput(pattern, b, c);
 
-            if (!File.Exists(input))
+            bool validInput = false;
+            string input = "";
+
+            while (!validInput)
             {
+                input = GetInput(pattern, b, c);
+
+                if (File.Exists(input))
+                {
+                    validInput = true;
+                    break;
+                }
+
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(input + " does not exist!");
-
-                return "";
             }
 
             return input;

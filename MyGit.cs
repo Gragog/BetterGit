@@ -10,25 +10,17 @@ namespace BetterGit
 {
     class MyGit
     {
-        string git = "";
-
-        string repo = "";
-
         string branch = "";
 
         public bool Prepare()
         {
             // git stuff test
-            AskForGit();
-            if (git == "") return false;
-
-            // repo stuff
-            AskForRepoPath();
-            if (repo == "") return false;
+            //AskForGit();
+            if (Settings.gitPath == "" || Settings.repoPath == "") return false;
 
             // cd stuff
             //Directory.SetCurrentDirectory(@"C:\Users\GRAMINI\Documents\MyUnityProjects\Tower-Defense");
-            Directory.SetCurrentDirectory(repo);
+            Directory.SetCurrentDirectory(Settings.repoPath);
 
             RefreshBranch();
             return true;
@@ -81,7 +73,7 @@ namespace BetterGit
         {
             Console.ForegroundColor = ConsoleColor.Gray;
             Process proc = new Process();
-            proc.StartInfo.FileName = @"git\cmd\git.exe";
+            proc.StartInfo.FileName = Settings.gitPath;
             proc.StartInfo.Arguments = param;
             proc.StartInfo.RedirectStandardInput = true;
             proc.StartInfo.UseShellExecute = false;
@@ -112,24 +104,31 @@ namespace BetterGit
             branch = newBranch.Replace("\n", "");
         }
 
-        void AskForGit()
+        public static string AskForGit()
         {
-            git = Gramini.Manager.Input.GetInputFile("Where is you git executable? ");
+            return Gramini.Manager.Input.GetInputFile("Where is you git executable? ");
         }
 
-        void AskForRepoPath()
+        public static string AskForRepoPath()
         {
-            repo = Gramini.Manager.Input.GetInputPath();
+            bool validInput = false;
+            string input = "";
 
-            Console.WriteLine(repo + @"\.git");
-
-            if (!Directory.Exists(repo + @"\.git"))
+            while (!validInput)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(repo + " is not a git repository");
+                input = Gramini.Manager.Input.GetInputPath();
 
-                repo = "";
+                if (Directory.Exists(input + @"\.git"))
+                {
+                    validInput = true;
+                    break;
+                }
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(input + " is not a git repository");
             }
+
+            return input;
         }
 
         int ParseSpecialCommands(string input)
