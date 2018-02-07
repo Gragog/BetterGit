@@ -37,9 +37,34 @@ namespace Gramini.Manager
             return input;
         }
 
-        static public int GetInputInt(string pattern, string b = "enter input", string c = "invalid input")
+        static public int GetInputInt(string pattern = @"^[-]?\d+$", string b = "enter input", string c = "invalid input")
         {
             return Convert.ToInt32(GetInput(pattern, b, c));
+        }
+
+        static public dynamic GetInputInt(int min, int max, bool allowEmpty, string b = "enter input", string c = "invalid input")
+        {
+            int number = 0;
+            string numberInput = "";
+
+            while (true)
+            {
+                numberInput = GetInput(@"^([-]?\d+)?$", b, c);
+
+                if (numberInput == "") return null;
+
+                number = Convert.ToInt32(number);
+                if (number > min && number < max)
+                {
+                    break;
+                }
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Input is out of range!");
+            }
+
+
+            return number;
         }
 
         static public string GetInputPath(string b = "enter path ", string c = "invalid input", string pattern = @"^.*$")

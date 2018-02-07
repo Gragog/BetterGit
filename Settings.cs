@@ -11,10 +11,12 @@ namespace BetterGit
     {
         public static string exePath = "";
 
+        #region Stuff for settings.cfg
         public static string gitPath = "";
         public static string repoPath = "";
 
         static string[] configFile;
+        #endregion
 
         public static void FillSettings()
         {
@@ -90,6 +92,22 @@ namespace BetterGit
 
                 return;
             }
+        }
+
+        public static void ChangeSettingsMenu()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine(
+                "Change what settings?" +
+                "\n" +
+                "\n1 - Path of git.exe" +
+                "\n2 - Repository"
+                );
+
+            int choice = Gramini.Manager.Input.GetInputInt(1, 2, true, "What setting to change? ", "Not a number!");
+
+
         }
     }
 }

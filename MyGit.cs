@@ -53,6 +53,7 @@ namespace BetterGit
 
             int nonGitAction = ParseSpecialCommands(param);
             if (nonGitAction == -1) return false;
+            if (nonGitAction == -2) return true;
 
             Run(param);
 
@@ -142,6 +143,12 @@ namespace BetterGit
             if (input.Contains("checkout"))
             {
                 return 1;
+            }
+
+            if (input == "settings")
+            {
+                Settings.ChangeSettingsMenu();
+                return -2;
             }
 
             return 0;
