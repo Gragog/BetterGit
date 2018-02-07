@@ -42,9 +42,6 @@ namespace Gramini.Manager
             return Convert.ToInt32(GetInput(pattern, b, c));
         }
 
-        /**
-         * todo while-loop until Directory.Exists
-         */
         static public string GetInputPath(string b = "enter path ", string c = "invalid input", string pattern = @"^.*$")
         {
             bool validInput = false;
