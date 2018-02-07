@@ -13,7 +13,7 @@ namespace BetterGit
 
         #region Stuff for settings.cfg
         public static string gitPath = "";
-        public static string repoPath = "";
+        public static string currentRepoPath = "";
 
         static string[] configFile;
         #endregion
@@ -27,9 +27,9 @@ namespace BetterGit
                 gitPath = MyGit.AskForGit();
             }
 
-            if (repoPath == "")
+            if (currentRepoPath == "")
             {
-                repoPath = MyGit.AskForRepoPath();
+                currentRepoPath = MyGit.AskForRepoPath();
             }
 
             // everything is set:
@@ -40,7 +40,7 @@ namespace BetterGit
         {
             string[] newConfig = new string[] {
                 "gitPath = " + gitPath,
-                "repoPath = " + repoPath
+                "repoPath = " + currentRepoPath
             };
 
             File.WriteAllLines(exePath + @"settings.cfg", newConfig);
@@ -79,15 +79,11 @@ namespace BetterGit
 
             if (line.StartsWith("repoPath = "))
             {
-                repoPath = line.Substring(11);
+                currentRepoPath = line.Substring(11);
 
-                Console.WriteLine(repoPath);
-
-                if (!Directory.Exists(repoPath))
+                if (!Directory.Exists(currentRepoPath))
                 {
-                    Console.WriteLine("exists");
-
-                    repoPath = MyGit.AskForRepoPath();
+                    currentRepoPath = MyGit.AskForRepoPath();
                 }
 
                 return;
@@ -96,18 +92,32 @@ namespace BetterGit
 
         public static void ChangeSettingsMenu()
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine(
-                "Change what settings?" +
-                "\n" +
-                "\n1 - Path of git.exe" +
-                "\n2 - Repository"
-                );
+            while (true)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine(
+                    "Change what settings?" +
+                    "\n" +
+                    "\n1 - Path of git.exe" +
+                    "\n2 - Repository" +
+                    "\n" +
+                    "\ne - exit" +
+                    "\n"
+                    );
 
-            int choice = Gramini.Manager.Input.GetInputInt(1, 2, true, "What setting to change? ", "Not a number!");
+                string choice = Gramini.Manager.Input.GetInput(@"^[12e]$", "What setting to change? ", "Not a valid choice!", ConsoleColor.DarkGreen, ConsoleColor.DarkMagenta);
 
+                Console.WriteLine();
 
+                switch (choice)
+                {
+                    case "1": Settings.gitPath = MyGit.AskForGit(); break;
+                    case "2": Settings.currentRepoPath = MyGit.AskForRepoPath(); break;
+
+                    case "e": Settings.WriteToSettingsToConfig(); Console.Clear(); Console.WriteLine("Settings saved to config\n"); Program.MyGitInstance.Prepare(); return;
+                }
+            }
         }
     }
 }

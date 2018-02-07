@@ -10,18 +10,20 @@ namespace Gramini.Manager
 {
     static class Input
     {
-        static public string GetInput(string pattern, string requestMessage = "enter input ", string errorMessage = "invalid input")
+        static public string GetInput(string pattern, string requestMessage = "enter input ", string errorMessage = "invalid input", ConsoleColor requestColor = ConsoleColor.Green, ConsoleColor inputColor = ConsoleColor.Magenta)
         {
+            ConsoleColor oldColor = Console.ForegroundColor;
+
             Regex item = new Regex(pattern);
             bool validInput = false;
             string input = "";
 
             while (!validInput)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = requestColor;
                 Console.Write(requestMessage);
 
-                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.ForegroundColor = inputColor;
                 input = Console.ReadLine();
 
                 if (item.IsMatch(input))
@@ -34,26 +36,23 @@ namespace Gramini.Manager
                 Console.WriteLine(errorMessage);
             }
 
+            Console.ForegroundColor = oldColor;
             return input;
         }
 
-        static public int GetInputInt(string pattern = @"^[-]?\d+$", string b = "enter input", string c = "invalid input")
+        static public int GetInputInt(string pattern = @"^[-]?\d+$", string b = "enter input", string c = "invalid input", ConsoleColor requestColor = ConsoleColor.Green, ConsoleColor inputColor = ConsoleColor.Magenta)
         {
-            return Convert.ToInt32(GetInput(pattern, b, c));
+            return Convert.ToInt32(GetInput(pattern, b, c, requestColor, inputColor));
         }
 
-        static public dynamic GetInputInt(int min, int max, bool allowEmpty, string b = "enter input", string c = "invalid input")
+        static public int GetInputInt(int min, int max, string b = "enter input", string c = "invalid input", ConsoleColor requestColor = ConsoleColor.Green, ConsoleColor inputColor = ConsoleColor.Magenta)
         {
             int number = 0;
-            string numberInput = "";
 
             while (true)
             {
-                numberInput = GetInput(@"^([-]?\d+)?$", b, c);
+                number = Convert.ToInt32(GetInput(@"^[-]?\d+$", b, c, requestColor, inputColor));
 
-                if (numberInput == "") return null;
-
-                number = Convert.ToInt32(number);
                 if (number > min && number < max)
                 {
                     break;
@@ -67,14 +66,14 @@ namespace Gramini.Manager
             return number;
         }
 
-        static public string GetInputPath(string b = "enter path ", string c = "invalid input", string pattern = @"^.*$")
+        static public string GetInputPath(string b = "enter path ", string c = "invalid input", string pattern = @"^.*$", ConsoleColor requestColor = ConsoleColor.Green, ConsoleColor inputColor = ConsoleColor.Magenta)
         {
             bool validInput = false;
             string input = "";
 
             while (!validInput)
             {
-                input = GetInput(pattern, b, c);
+                input = GetInput(pattern, b, c, requestColor, inputColor);
 
                 if (Directory.Exists(input))
                 {
@@ -88,7 +87,7 @@ namespace Gramini.Manager
             return input;
         }
 
-        internal static string GetInputFile(string b = "enter path to file", string c = "invalid input", string pattern = @"^.*$")
+        internal static string GetInputFile(string b = "enter path to file", string c = "invalid input", string pattern = @"^.*$", ConsoleColor requestColor = ConsoleColor.Green, ConsoleColor inputColor = ConsoleColor.Magenta)
         {
 
             bool validInput = false;
@@ -96,7 +95,7 @@ namespace Gramini.Manager
 
             while (!validInput)
             {
-                input = GetInput(pattern, b, c).Replace("\"", "");
+                input = GetInput(pattern, b, c, requestColor, inputColor).Replace("\"", "");
 
                 if (File.Exists(input))
                 {

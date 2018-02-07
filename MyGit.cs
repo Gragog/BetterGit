@@ -16,11 +16,16 @@ namespace BetterGit
         {
             // git stuff test
             //AskForGit();
-            if (Settings.gitPath == "" || Settings.repoPath == "") return false;
+            if (Settings.gitPath == "" || Settings.currentRepoPath == "") return false;
 
             // cd stuff
             //Directory.SetCurrentDirectory(@"C:\Users\GRAMINI\Documents\MyUnityProjects\Tower-Defense");
-            Directory.SetCurrentDirectory(Settings.repoPath);
+            Directory.SetCurrentDirectory(Settings.currentRepoPath);
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("Currently working in ");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write(Settings.currentRepoPath + "\n\n");
 
             RefreshBranch();
             return true;
