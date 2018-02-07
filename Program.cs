@@ -13,14 +13,14 @@ namespace BetterGit
         static void Main(string[] args)
         {
             Settings.exePath = Directory.GetCurrentDirectory() + @"\";
-            Console.WriteLine(Settings.exePath);
+            //Console.WriteLine(Settings.exePath);
             Settings.FillSettings();
 
             MyGit program = new MyGit();
-            //bool keepOn = program.Prepare();
-            //while (keepOn) keepOn = program.Start();
+            bool keepOn = program.Prepare();
+            while (keepOn) keepOn = program.Start();
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }

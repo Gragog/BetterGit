@@ -46,8 +46,6 @@ namespace BetterGit
 
         static void ReadConfigFile()
         {
-            Console.WriteLine(exePath + @"settings.cfg");
-
             if (!File.Exists(exePath + @"settings.cfg"))
             {
                 File.WriteAllText(exePath + @"settings.cfg", "");
@@ -64,16 +62,32 @@ namespace BetterGit
 
         private static void WriteToSettings(string line)
         {
+            if (line.StartsWith("//")) return;
+
             // gitPath
             if (line.StartsWith("gitPath = "))
             {
-                gitPath = line.Substring(13);
+                gitPath = line.Substring(10);
+                if (!File.Exists(gitPath))
+                {
+                    gitPath = MyGit.AskForGit();
+                }
                 return;
             }
 
             if (line.StartsWith("repoPath = "))
             {
                 repoPath = line.Substring(11);
+
+                Console.WriteLine(repoPath);
+
+                if (!Directory.Exists(repoPath))
+                {
+                    Console.WriteLine("exists");
+
+                    repoPath = MyGit.AskForRepoPath();
+                }
+
                 return;
             }
         }

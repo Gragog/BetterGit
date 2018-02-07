@@ -47,14 +47,20 @@ namespace Gramini.Manager
          */
         static public string GetInputPath(string b = "enter path ", string c = "invalid input", string pattern = @"^.*$")
         {
-            string input = GetInput(pattern, b, c);
+            bool validInput = false;
+            string input = "";
 
-            if (!Directory.Exists(input))
+            while (!validInput)
             {
+                input = GetInput(pattern, b, c);
+
+                if (Directory.Exists(input))
+                {
+                    break;
+                }
+
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(input + " does not exist!");
-
-                return "";
             }
 
             return input;
@@ -68,7 +74,7 @@ namespace Gramini.Manager
 
             while (!validInput)
             {
-                input = GetInput(pattern, b, c);
+                input = GetInput(pattern, b, c).Replace("\"", "");
 
                 if (File.Exists(input))
                 {

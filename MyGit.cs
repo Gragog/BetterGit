@@ -88,7 +88,7 @@ namespace BetterGit
         {
             Console.ForegroundColor = ConsoleColor.Gray;
             Process proc = new Process();
-            proc.StartInfo.FileName = @"git\cmd\git.exe";
+            proc.StartInfo.FileName = Settings.gitPath;
             proc.StartInfo.Arguments = "rev-parse --abbrev-ref HEAD";
             proc.StartInfo.RedirectStandardInput = true;
             proc.StartInfo.RedirectStandardOutput = true;
@@ -106,7 +106,7 @@ namespace BetterGit
 
         public static string AskForGit()
         {
-            return Gramini.Manager.Input.GetInputFile("Where is you git executable? ");
+            return Gramini.Manager.Input.GetInputFile("Where is your git executable? ");
         }
 
         public static string AskForRepoPath()
