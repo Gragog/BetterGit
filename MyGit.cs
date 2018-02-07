@@ -122,7 +122,7 @@ namespace BetterGit
 
             while (!validInput)
             {
-                input = Gramini.Manager.Input.GetInputPath();
+                input = Gramini.Manager.Input.GetInputPath("Enter path to your git repository: ");
 
                 if (Directory.Exists(input + @"\.git"))
                 {
