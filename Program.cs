@@ -16,6 +16,7 @@ namespace BetterGit
 
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Settings.exePath = Directory.GetCurrentDirectory() + @"\";
             //Console.WriteLine(Settings.exePath);
             Settings.FillSettings();
